@@ -1,5 +1,8 @@
 
-$Peers_All = Get-AzSubscription | Set-AzContext | ForEach-Object { Get-AzVirtualNetwork } | Select-Object -property @{N='VirtualNetworkName';E={$_.Name}},ResourceGroupName | Get-AzVirtualNetworkPeering
+$Peers_All = Get-AzSubscription | 
+    ForEach-Object { $_ | Set-AzContext | 
+        ForEach-Object { Get-AzVirtualNetwork | Select-Object -property @{N='VirtualNetworkName';E={$_.Name}},ResourceGroupName | Get-AzVirtualNetworkPeering } 
+    } 
 
 $Peers_Filtered = $Peers_All | 
     Select-Object -Property Name, ResourceGroupName, VirtualNetworkName, PeeringState, AllowVirtualNetworkAccess, AllowForwardedTraffic, AllowGatewayTransit, UseRemoteGateways,     
