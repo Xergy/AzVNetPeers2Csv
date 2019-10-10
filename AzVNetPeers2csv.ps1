@@ -8,7 +8,7 @@ $Peers_Filtered = $Peers_All |
     Select-Object -Property Name, ResourceGroupName, VirtualNetworkName, PeeringState, AllowVirtualNetworkAccess, AllowForwardedTraffic, AllowGatewayTransit, UseRemoteGateways,     
         @{N='RemoteVNet';E={$_.RemoteVirtualNetwork.id.tostring().split('/')[8]}},
         @{N='Subscription';E={
-            Get-AzSubscription -SubscriptionId ($_.RemoteVirtualNetwork.id.tostring().split('/')[2]) | foreach-object {$_.Name}
+            Get-AzSubscription -SubscriptionId ($_.id.tostring().split('/')[2]) | foreach-object {$_.Name}
             }
         } |
         Select-Object -Property Subscription, ResourceGroupName, VirtualNetworkName, RemoteVNet, Name, PeeringState, AllowVirtualNetworkAccess, AllowForwardedTraffic, AllowGatewayTransit, UseRemoteGateways
